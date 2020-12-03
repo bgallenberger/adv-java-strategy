@@ -6,31 +6,17 @@ public class CustomerOrder {
     private double billAmount;
     private char discountType;
 
+    public Discount discountAmmount;
+
     public CustomerOrder(String customerName, double billAmount, char discountType) {
         this.customerName = customerName;
         this.billAmount = billAmount;
         this.discountType = discountType;
+        setDiscountAmmount();
     }
 
     public double getBillAmount() {
-        double tempBill;
-        switch (discountType) {
-            case 'S':
-            case 's':
-                tempBill = billAmount - (billAmount * 0.1);
-                break;
-            case 'D':
-            case 'd':
-                tempBill = billAmount - (billAmount * 0.5);
-                break;
-            case 'L':
-            case 'l':
-                tempBill = billAmount - (billAmount * 0.75);
-                break;
-            default:
-                tempBill = billAmount;
-        }
-        return tempBill;
+        return billAmount - (billAmount * getDiscountAmmount());
     }
 
     public void setBillAmount(double billAmount) {
@@ -43,6 +29,31 @@ public class CustomerOrder {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public double getDiscountAmmount() {
+
+        return discountAmmount.discount();
+    }
+
+    public void setDiscountAmmount() {
+
+        switch (discountType) {
+            case 'S':
+            case 's':
+                this.discountAmmount = new SDiscount();
+                break;
+            case 'D':
+            case 'd':
+                this.discountAmmount = new DDiscount();
+                break;
+            case 'L':
+            case 'l':
+                this.discountAmmount = new LDiscount();
+                break;
+            default:
+                this.discountAmmount = new NDiscount();
+        }
     }
 
     @Override
